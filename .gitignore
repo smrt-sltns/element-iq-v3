@@ -1,0 +1,15 @@
+
+#virtual env
+venv/
+
+media/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.sqlite3
+
+#.env
+.env

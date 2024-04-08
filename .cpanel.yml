@@ -1,0 +1,10 @@
+---
+deployment:
+ tasks:
+ - export DEPLOYPATH=/home/greenzo2/smart-util.com/
+ - /bin/cp -R blog $DEPLOYPATH
+ - /bin/cp -R templates $DEPLOYPATH
+ - /bin/cp -R tesseract_app $DEPLOYPATH
+ - /bin/cp -R project $DEPLOYPATH
+ - /bin/cp manage.py $DEPLOYPATH
+ - /bin/cp requirements.txt $DEPLOYPATH

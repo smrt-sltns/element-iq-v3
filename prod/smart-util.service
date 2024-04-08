@@ -1,0 +1,14 @@
+[Unit]
+Description=smart-util
+After=network.target
+
+[Service]
+User=coboit
+WorkingDirectory=/home/coboit/smart-util.com
+Environment="PATH=/home/coboit/virtualenv/smart-util.com/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/home/coboit/virtualenv/smart-util.com/bin/uwsgi --ini smart-util-uwsgi.ini
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

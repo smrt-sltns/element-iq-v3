@@ -14,14 +14,17 @@ from pathlib import Path
 import os 
 from django.urls import reverse_lazy
 
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / ".env")
 ## COMMENT BELOW 4 LINES IF WINDOWS USER
-TESSERACT_PATH = os.path.expanduser('~/.local/bin/tesseract')  # Path to Tesseract executable in .local folder
+# TESSERACT_PATH = os.path.expanduser('~/.local/bin/tesseract')  # Path to Tesseract executable in .local folder
 # Add Tesseract path to environment variable
-os.environ['TESSDATA_PREFIX'] = os.path.expanduser('~/.local/share/tessdata')
-os.environ['PATH'] += ':' + os.path.dirname(TESSERACT_PATH)
+# os.environ['TESSDATA_PREFIX'] = os.path.expanduser('~/.local/share/tessdata')
+#os.environ['PATH'] += ':' + os.path.dirname(TESSERACT_PATH)
 
 
 # Quick-start development settings - unsuitable for production
@@ -55,6 +58,7 @@ INSTALLED_APPS = [
 
     'account',
     'dashboard',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -170,3 +174,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET =  os.getenv('GOOGLE_OAUTH2_SECRET')
 DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600 
 
 AUTH_USER_MODEL = 'account.User'
+
+STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')

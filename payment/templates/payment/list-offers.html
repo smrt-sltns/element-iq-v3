@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="offer-wrapper">
+    {% for o in token_offers %}
+        <div class="offer">
+            <span>{{ o.name }}</span>
+            <span>$ {{ o.price }}</span>
+            <span>{{ o.price | floatformat:"-2"}} Tokens</span>
+            <button onclick="handleBuy('{{ o.priceId }}')">Buy</button>
+        </div>
+        <br><br>
+    {% endfor %}
+</div>
+
+<script>
+    const publishableKey = "{{ STRIPE_PUBLISHABLE_KEY }}";
+    const username = "{{ request.user.username }}";
+    const email = "{{ request.user.email }}";
+    const handleBuy = ( priceId ) => {
+
+    const data = { 
+        priceId: priceId,
+        username: username,
+        email: email,
+    };
+
+    fetch(window.location.href, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json', // Set the content type to JSON
+    },
+    body: JSON.stringify(data), // Convert the data to JSON format
+    })
+    .then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+    })
+    .then(data => {
+    // Handle the response data
+    console.log(data);
+    window.location.href = data.redirect_url;
+    })
+    .catch(error => {
+    // Handle errors
+    console.error('There was a problem with the POST request:', error);
+    });
+
+        console.log(priceId);
+    }
+</script>
+
+{% endblock %}

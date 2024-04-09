@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('dashboard.urls'), name='dashboard'),
     path('account/', include('account.urls'), name='account'),
     path('accounts/', include('social_django.urls', namespace='social')),
+    path('payment/', include('payment.urls', namespace='payment')),
 ]
 
 if settings.DEBUG:

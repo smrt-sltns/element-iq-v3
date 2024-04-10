@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'account',
     'dashboard',
     'payment',
+    'image_apis',
 ]
 
 MIDDLEWARE = [

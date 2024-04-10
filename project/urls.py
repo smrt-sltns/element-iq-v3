@@ -24,6 +24,7 @@ urlpatterns = [
     path('account/', include('account.urls'), name='account'),
     path('accounts/', include('social_django.urls', namespace='social')),
     path('payment/', include('payment.urls', namespace='payment')),
+    path('image/', include('image_apis.urls', namespace='image_apis')),
 ]
 
 if settings.DEBUG:

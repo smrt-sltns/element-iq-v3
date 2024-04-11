@@ -4,6 +4,7 @@
 
 {% block content %}
 <div id="prompt-wrapper">
+    <span id="user-tokens">{{userToken}}</span>
     <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
     <button id="generate-button">Generate</button>
 </div>
@@ -13,6 +14,7 @@
 
 <script>
     
+    const userTokenElement = document.getElementById("user-tokens");
     const promptInput = document.getElementById("prompt-input");
     const generateButton = document.getElementById("generate-button");
     const imageWrapper = document.getElementById("image-wrapper");
@@ -20,9 +22,10 @@
     const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
     const base_url = "http://localhost:8000/";
 
-    var userToken = "{{ user_token }}";
+    var userToken = "{{ userToken }}";
 
     generateButton.onclick = () => {
+
         const prompt = promptInput.value;
         if( !prompt ){
             return
@@ -52,7 +55,6 @@
                 }
                 return response.arrayBuffer();
             }).then(data => {
-
                 const blob = new Blob([data]);
                 const blobUrl = URL.createObjectURL(blob);
                 const imageElement = document.createElement('img');
@@ -61,6 +63,7 @@
                 imageElement.style.maxHeight = "100%";
                 imageWrapper.innerHTML = null;
                 imageWrapper.appendChild(imageElement);
+                decrease_tokens(1);
             }).catch(e => {
                 console.error(e);
             });
@@ -70,7 +73,7 @@
             const form = new FormData();
             form.append("userId", "{{userId}}");
             form.append("amount", amount);
-            
+
             fetch(
             base_url + "image/decrease-tokens/",
             {
@@ -84,6 +87,8 @@
                 return response.json();
             }).then(data => {
 
+                userToken = data.remainingTokens;
+                userTokenElement.innerText = userToken;
                 
             }).catch(e => {
                 console.error(e);

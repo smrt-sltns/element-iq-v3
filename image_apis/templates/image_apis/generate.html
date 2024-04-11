@@ -17,6 +17,11 @@
     const generateButton = document.getElementById("generate-button");
     const imageWrapper = document.getElementById("image-wrapper");
 
+    const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
+    const base_url = "http://localhost:8000/";
+
+    var userToken = "{{ user_token }}";
+
     generateButton.onclick = () => {
         const prompt = promptInput.value;
         if( !prompt ){
@@ -28,7 +33,7 @@
         
         
         fetch(
-            `https://api.stability.ai/v2beta/stable-image/generate/core`,
+            stabilityAiGenerateUrl,
             {
                 method: "POST",
                 body: form,
@@ -39,29 +44,52 @@
                 validateStatus: undefined,
                 responseType: "arraybuffer",
             }
-            ).then(response => {
+            ).then(async response => {
                 console.log(response)
                 if(!response.ok){
+                    console.log(await response.json());
                     throw new Error("response was not okay")
                 }
-                console.log(response.errors)
                 return response.arrayBuffer();
             }).then(data => {
+
                 const blob = new Blob([data]);
-                // Create a blob URL from the blob
                 const blobUrl = URL.createObjectURL(blob);
-                // Create an image element and set its source to the blob URL
                 const imageElement = document.createElement('img');
                 imageElement.src = blobUrl;
                 imageElement.style.maxWidth = "100%";
                 imageElement.style.maxHeight = "100%";
-                // Append the image element to the document body or any other desired location
                 imageWrapper.innerHTML = null;
                 imageWrapper.appendChild(imageElement);
             }).catch(e => {
                 console.error(e);
             });
         }
+
+        function decrease_tokens(amount) {
+            const form = new FormData();
+            form.append("userId", "{{userId}}");
+            form.append("amount", amount);
+            
+            fetch(
+            base_url + "image/decrease-tokens/",
+            {
+                method: "POST",
+                body: form,
+            }
+            ).then(async response => {
+                if(!response.ok){
+                    throw new Error("response was not okay")
+                }
+                return response.json();
+            }).then(data => {
+
+                
+            }).catch(e => {
+                console.error(e);
+            });
+        }
+
 </script>
         
 

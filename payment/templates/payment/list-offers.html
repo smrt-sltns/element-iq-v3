@@ -21,7 +21,7 @@
     const username = "{{ request.user.username }}";
     const email = "{{ request.user.email }}";
     const handleBuy = ( priceId ) => {
-
+        show_loading_for_redirect();
     const data = { 
         priceId: priceId,
         username: username,

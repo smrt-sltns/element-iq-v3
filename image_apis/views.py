@@ -4,6 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from account.models import User
 
+from .utils import generate_image
+
 import json
 
 
@@ -26,6 +28,10 @@ def decrease_tokens(request):
 @login_required
 def generate(request):
 
+    if request.method == "POST":
+        prompt = request.POST.get("prompt")
+        
+        pass
     
     context = {
         "api_key": "sk-saMcB871NueeMnAO3SYpTwNiGRyz2D5t1rZtQBI9vfG56wF1",
@@ -36,5 +42,7 @@ def generate(request):
     return render(request, "image_apis/generate.html", context)
 
 
-
-
+def test(request):
+    print("test request came in")
+    generate_image()
+    return JsonResponse({"ok":"asd"})

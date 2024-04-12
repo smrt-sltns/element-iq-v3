@@ -6,4 +6,5 @@ app_name = 'image_apis'
 urlpatterns = [
     path('generate/', views.generate, name='generate'),
     path('decrease-tokens/', views.decrease_tokens, name='decrease-tokens'),
+    path('test/', views.test, name='test'),
 ]

@@ -20,6 +20,9 @@
 </head>
 
 <body>
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
     {% block message %}{% endblock %}
     <div>
         <a href="{% url 'dashboard:home' %}">Home</a>
@@ -39,7 +42,7 @@
             </div>
         </div>
     </main>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
-<script src="{% static 'js/script.js' %}"></script>
 
 </html>

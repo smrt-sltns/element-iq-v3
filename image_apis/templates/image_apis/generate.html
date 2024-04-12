@@ -6,11 +6,9 @@
 <div id="prompt-wrapper">
     <span id="user-tokens">{{userToken}}</span>
     <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
-    <button id="generate-button">Generate</button>
+    <button id="generate-button"><span class="loader"></span>Generate</button>
 </div>
-<div id="image-wrapper" style="max-width: 100%; max-height: 100%;">
-
-</div>
+<div id="image-wrapper" style="max-width: 100%; max-height: 100%;"></div>
 
 <script>
     
@@ -25,7 +23,7 @@
     var userToken = "{{ userToken }}";
 
     generateButton.onclick = () => {
-
+        show_loading_for_redirect();
         const prompt = promptInput.value;
         if( !prompt ){
             return
@@ -48,7 +46,6 @@
                 responseType: "arraybuffer",
             }
             ).then(async response => {
-                console.log(response)
                 if(!response.ok){
                     console.log(await response.json());
                     throw new Error("response was not okay")
@@ -64,6 +61,7 @@
                 imageWrapper.innerHTML = null;
                 imageWrapper.appendChild(imageElement);
                 decrease_tokens(1);
+                hide_loading();
             }).catch(e => {
                 console.error(e);
             });
@@ -89,7 +87,7 @@
 
                 userToken = data.remainingTokens;
                 userTokenElement.innerText = userToken;
-                
+
             }).catch(e => {
                 console.error(e);
             });

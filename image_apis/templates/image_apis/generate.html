@@ -29,10 +29,38 @@
             return
         }
         const form = new FormData();
+        form.append("userId", "{{ userId }}");
         form.append("prompt", prompt);
         form.append("output_format", "png");
         
-        
+        fetch(
+            "{% url 'image_apis:generate-ajax' %}",
+            {
+                method: "POST",
+                body: form,
+            }
+            ).then(async response => {
+                if(!response.ok){
+                    console.log(await response.json());
+                    throw new Error("response was not okay")
+                }
+                return response.blob();
+            }).then(blob => {
+                const blobUrl = URL.createObjectURL(blob);
+                const imageElement = document.createElement('img');
+                imageElement.src = blobUrl;
+                imageElement.style.maxWidth = "100%";
+                imageElement.style.maxHeight = "100%";
+                imageWrapper.innerHTML = null;
+                imageWrapper.appendChild(imageElement);
+                userToken--;
+                userTokenElement.innerText = userToken;
+                // decrease_tokens(1);
+                hide_loading();
+            }).catch(e => {
+                console.error(e);
+            });
+        /*
         fetch(
             stabilityAiGenerateUrl,
             {
@@ -65,6 +93,7 @@
             }).catch(e => {
                 console.error(e);
             });
+            */
         }
 
         function decrease_tokens(amount) {

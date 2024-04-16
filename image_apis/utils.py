@@ -15,11 +15,13 @@ def generate_image(prompt):
             "output_format": "png",
         },
     )
-
+    return response
     if response.status_code == 200:
+        return 200, response.content
         with open("./lighthouse.png", 'wb') as file:
             file.write(response.content)
     else:
+        return response.status_code, str(response.json())
         raise Exception(str(response.json()))
 
 """

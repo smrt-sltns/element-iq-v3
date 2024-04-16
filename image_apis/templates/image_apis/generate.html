@@ -4,31 +4,65 @@
 
 {% block content %}
 <div id="prompt-wrapper">
+    <span id="user-tokens">{{userToken}}</span>
     <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
-    <button id="generate-button">Generate</button>
+    <button id="generate-button" class="universal-btn"><span class="loader"></span>Generate</button>
 </div>
-<div id="image-wrapper" style="max-width: 100%; max-height: 100%;">
-
-</div>
+<div id="image-wrapper" style="max-width: 100%; max-height: 100%;"></div>
 
 <script>
     
+    const userTokenElement = document.getElementById("user-tokens");
     const promptInput = document.getElementById("prompt-input");
     const generateButton = document.getElementById("generate-button");
     const imageWrapper = document.getElementById("image-wrapper");
 
+    const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
+    const base_url = "http://localhost:8000/";
+
+    var userToken = "{{ userToken }}";
+
     generateButton.onclick = () => {
+        show_loading_for_redirect();
         const prompt = promptInput.value;
         if( !prompt ){
             return
         }
         const form = new FormData();
+        form.append("userId", "{{ userId }}");
         form.append("prompt", prompt);
         form.append("output_format", "png");
         
-        
         fetch(
-            `https://api.stability.ai/v2beta/stable-image/generate/core`,
+            "{% url 'image_apis:generate-ajax' %}",
+            {
+                method: "POST",
+                body: form,
+            }
+            ).then(async response => {
+                if(!response.ok){
+                    console.log(await response.json());
+                    throw new Error("response was not okay")
+                }
+                return response.blob();
+            }).then(blob => {
+                const blobUrl = URL.createObjectURL(blob);
+                const imageElement = document.createElement('img');
+                imageElement.src = blobUrl;
+                imageElement.style.maxWidth = "100%";
+                imageElement.style.maxHeight = "100%";
+                imageWrapper.innerHTML = null;
+                imageWrapper.appendChild(imageElement);
+                userToken--;
+                userTokenElement.innerText = userToken;
+                // decrease_tokens(1);
+                hide_loading();
+            }).catch(e => {
+                console.error(e);
+            });
+        /*
+        fetch(
+            stabilityAiGenerateUrl,
             {
                 method: "POST",
                 body: form,
@@ -39,29 +73,55 @@
                 validateStatus: undefined,
                 responseType: "arraybuffer",
             }
-            ).then(response => {
-                console.log(response)
+            ).then(async response => {
                 if(!response.ok){
+                    console.log(await response.json());
                     throw new Error("response was not okay")
                 }
-                console.log(response.errors)
                 return response.arrayBuffer();
             }).then(data => {
                 const blob = new Blob([data]);
-                // Create a blob URL from the blob
                 const blobUrl = URL.createObjectURL(blob);
-                // Create an image element and set its source to the blob URL
                 const imageElement = document.createElement('img');
                 imageElement.src = blobUrl;
                 imageElement.style.maxWidth = "100%";
                 imageElement.style.maxHeight = "100%";
-                // Append the image element to the document body or any other desired location
                 imageWrapper.innerHTML = null;
                 imageWrapper.appendChild(imageElement);
+                decrease_tokens(1);
+                hide_loading();
+            }).catch(e => {
+                console.error(e);
+            });
+            */
+        }
+
+        function decrease_tokens(amount) {
+            const form = new FormData();
+            form.append("userId", "{{userId}}");
+            form.append("amount", amount);
+
+            fetch(
+            base_url + "image/decrease-tokens/",
+            {
+                method: "POST",
+                body: form,
+            }
+            ).then(async response => {
+                if(!response.ok){
+                    throw new Error("response was not okay")
+                }
+                return response.json();
+            }).then(data => {
+
+                userToken = data.remainingTokens;
+                userTokenElement.innerText = userToken;
+
             }).catch(e => {
                 console.error(e);
             });
         }
+
 </script>
         
 

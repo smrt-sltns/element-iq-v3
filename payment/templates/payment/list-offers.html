@@ -7,10 +7,10 @@
 <div class="offer-wrapper">
     {% for o in token_offers %}
         <div class="offer">
-            <span>{{ o.name }}</span>
-            <span>$ {{ o.price }}</span>
-            <span>{{ o.price | floatformat:"-2"}} Tokens</span>
-            <button onclick="handleBuy('{{ o.priceId }}')">Buy</button>
+            <h3 class="offer-name">{{ o.name }}</h3>
+            <span class="offer-price">$ {{ o.price }}</span>
+            <span class="offer-token">{{ o.price | floatformat:"-2"}} Tokens</span>
+            <button onclick="handleBuy('{{ o.priceId }}')" class="universal-btn">Buy</button>
         </div>
         <br><br>
     {% endfor %}
@@ -21,7 +21,7 @@
     const username = "{{ request.user.username }}";
     const email = "{{ request.user.email }}";
     const handleBuy = ( priceId ) => {
-
+        show_loading_for_redirect();
     const data = { 
         priceId: priceId,
         username: username,

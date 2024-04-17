@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from account.models import User
 
+from account.auth import admin_only
 from .utils import generate_image
 
 import json
@@ -24,7 +25,7 @@ def decrease_tokens(request):
 
     return JsonResponse({"status": "ok", "remainingTokens": user.token})
 
-
+@admin_only
 @login_required
 def generate(request):
 
@@ -44,6 +45,20 @@ def generate(request):
     
 
     return render(request, "image_apis/generate.html", context)
+
+@login_required
+def admin_restriction(request):
+    data = "You need to be a superuser to access this feature"
+    
+    # Create an HTTP response with the data
+    response = HttpResponse(data)
+    
+    # Optionally, you can set headers, status codes, content types, etc.
+    response['Custom-Header'] = 'Some value'
+    response.status_code = 200  # Default status code is 200 (OK)
+    response['Content-Type'] = 'text/plain'  # Set the content type
+    
+    return response
 
 
 @csrf_exempt

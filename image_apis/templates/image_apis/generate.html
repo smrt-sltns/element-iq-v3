@@ -17,7 +17,7 @@
     const generateButton = document.getElementById("generate-button");
     const imageWrapper = document.getElementById("image-wrapper");
 
-    const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
+    // const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
     const base_url = "http://localhost:8000/";
 
     var userToken = "{{ userToken }}";
@@ -60,40 +60,6 @@
             }).catch(e => {
                 console.error(e);
             });
-        /*
-        fetch(
-            stabilityAiGenerateUrl,
-            {
-                method: "POST",
-                body: form,
-                headers: {
-                    Authorization: "Bearer {{api_key}}",
-                    Accept: "image/*",
-                },
-                validateStatus: undefined,
-                responseType: "arraybuffer",
-            }
-            ).then(async response => {
-                if(!response.ok){
-                    console.log(await response.json());
-                    throw new Error("response was not okay")
-                }
-                return response.arrayBuffer();
-            }).then(data => {
-                const blob = new Blob([data]);
-                const blobUrl = URL.createObjectURL(blob);
-                const imageElement = document.createElement('img');
-                imageElement.src = blobUrl;
-                imageElement.style.maxWidth = "100%";
-                imageElement.style.maxHeight = "100%";
-                imageWrapper.innerHTML = null;
-                imageWrapper.appendChild(imageElement);
-                decrease_tokens(1);
-                hide_loading();
-            }).catch(e => {
-                console.error(e);
-            });
-            */
         }
 
         function decrease_tokens(amount) {

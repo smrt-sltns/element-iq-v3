@@ -9,5 +9,17 @@ function hide_loading(params) {
     loading.style.display = "none";
 }
 
+jQuery(function($){
+    $('.community-slider').slick({
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        dots: false,
+        autoplay: true, 
+        autoplaySpeed: 1000,
+        speed: 1000
+      });
+})
 
 

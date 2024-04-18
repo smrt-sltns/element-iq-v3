@@ -6,8 +6,11 @@
     padding: 0;
 }
 :root{
-    --primary-color: #700505;
-    --secondary-color: #520202;
+    --primary-color: #0da3e1;
+    --secondary-color: #3a60af;
+    --pink-color: #ee35a1;
+    --lightgreen-color: #79c76d;
+    --yellow-color: #fabd48;
     --white-color: #ffffff;
     --black-color: #000000;
 }
@@ -23,6 +26,13 @@ h1,h2,h3,h4,h5,h6{
 }
 a,svg,button,input[type="submit"]{
     transition: .3s;
+}
+p{
+    font-size: 18px;
+}
+img{
+    display: block;
+    max-width: 100%;
 }
 input{
     width: 100%;
@@ -91,6 +101,10 @@ input[type="checkbox"],input[type="radio"]{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.main-content{
+    width: 100%;
 }
 
 .navbar ul{
@@ -379,41 +393,6 @@ input[type="checkbox"],input[type="radio"]{
     display: flex;
     align-items: center;
 }
-@media screen and (max-width: 768px){
-    .logo-header{
-        text-align: center;
-    }
-    .login-box, .signup-box{
-        width: 100%;
-    }
-    .title{
-        font-size: 30px;
-    }
-    .login-inner-box h3{
-        font-size: 20px;
-    }
-    .google-btn{
-        padding: 10px;
-        width: 150px;
-    }
-    input{
-        height: 40px;
-    }
-}
-@media screen and (max-width: 640px){
-    .universal-btn, .universal-outline-btn, #message-form button{
-        padding: 8px 20px;
-        font-size: 14px;
-    }
-    .image-upload-label {
-        padding: 10px 30px;
-        font-size: 16px;
-    }
-}
-
-
-
-
 
 .loading-overlay {
     position: fixed; /* Positioned relative to the viewport */
@@ -472,9 +451,241 @@ form .helptext, form li{
     font-size: 12px;
     color: gray;
 }
-@media (max-width: 768px){
+.banner-section{
+    position: relative;
+}
+.banner-content{
+    position: absolute;
+    top: 60px;
+    left: 30px;
+    max-width: 400px;
+}
+.banner-content h1{
+    font-size: 30px;
+}
+
+.single-btn-section{
+    padding: 50px 0;
+    text-align: center;
+}
+
+.single-btn{
+    display: inline-block;
+    font-size: 25px;
+    border-radius: 50px;
+}
+
+.dreams-section{
+    padding: 50px 0;
+    background-color: var(--primary-color);
+}
+
+.dreams-section .title{
+    color: var(--white-color);
+    text-align: center;
+    font-weight: 400;
+    font-size: 50px;
+}
+
+.dreams-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.dream-item{
+    color: var(--white-color);
+}
+
+.dream-item p{
+    font-size: 18px;
+}
+
+.dream-item h3 sup{
+    color: gray;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--pink-color);
+}
+
+.dream-item h3 sup sup{
+    font-size: 10px;
+    color: var(--lightgreen-color);
+}
+
+.dream-item h3 > sup{
+    position: relative;
+    top: -15px;
+}
+
+.theme-badge{
+    background: var(--pink-color);
+    background: linear-gradient(90deg, var(--pink-color) 21%, var(--lightgreen-color) 62%, var(--yellow-color) 100%);
+    color: var(--white-color);
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 25px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.generate-section{
+    padding: 50px 0;
+    text-align: center;
+}
+
+.generate-content p{
+    margin-top: 20px;
+}
+
+.community-content .title{
+    text-align: center;
+}
+.features-section{
+    background-color: var(--secondary-color);
+    padding: 50px 0;
+}
+
+.features-section .title{
+    color: var(--white-color);
+    text-align: center;
+}
+
+.feature-item-header{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.feature-item-header i{
+    font-size: 30px;
+    color: var(--pink-color);
+}
+.feature-item-header h3{
+    font-size: 25px;
+    font-weight: 600;
+}
+.features-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+.feature-item{
+    padding: 10px 20px;
+    border: 1px solid var(--yellow-color);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    color: var(--white-color);
+}
+.feature-item p{
+    margin-bottom: 0;
+}
+
+.footer-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.social-links{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.social-links a{
+    font-size: 18px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    text-decoration: none;
+}
+
+@media screen and (max-width: 768px){
+    p{
+        font-size: 16px;
+    }
+    .logo-header{
+        text-align: center;
+    }
+    .login-box, .signup-box{
+        width: 100%;
+    }
+    .title{
+        font-size: 30px;
+    }
+    .login-inner-box h3{
+        font-size: 20px;
+    }
+    .google-btn{
+        padding: 10px;
+        width: 150px;
+    }
+    input{
+        height: 40px;
+    }
     .navbar a, .universal-btn, .universal-outline-btn{
         padding: 5px 15px;
         font-size: 16px;
+    }
+    .dreams-grid, .features-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .feature-item-header h3{
+        font-size: 20px;
+        font-weight: 500;
+    }
+    .dreams-section .title{
+        font-size: 30px;
+    }
+    .dream-item p{
+        font-size: 16px;
+    }
+    .generate-section, .dreams-section, .single-btn-section, .features-section{
+        padding: 30px 0;
+    }
+    .social-links a{
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+    .footer-content{
+        justify-content: center;
+    }
+}
+@media screen and (max-width: 640px){
+    .title{
+        font-size: 25px;
+    }
+    .universal-btn, .universal-outline-btn, #message-form button{
+        padding: 8px 20px;
+        font-size: 14px;
+    }
+    .image-upload-label {
+        padding: 10px 30px;
+        font-size: 16px;
+    }
+    .dreams-grid, .features-grid{
+        grid-template-columns: 1fr;
+    }
+    .dreams-section .title{
+        font-size: 25px;
+    }
+    .dream-item h3{
+        font-size: 20px;
+    }
+    .generate-section, .dreams-section, .single-btn-section, .features-section{
+        padding: 20px 0;
+    }
+    .feature-item-header i{
+        font-size: 25px;
     }
 }

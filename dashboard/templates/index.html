@@ -1,4 +1,197 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+<section class="banner-section">
+    <div class="banner-container">
+        <!-- <div class="banner-content">
+            <h1>Start generating the<br>
+                images of your dreams</h1>
+            <p>Get early access to SDXL 1.0 and be the first to try out new features.</p>
+        </div> -->
+        <img src="{% static 'img/ai-banner.webp' %}" alt="Start generating the">
+    </div>
+</section>
+
+<section class="single-btn-section">
+    <div class="container">
+        <div class="single-btn-box">
+            <a href="{% url 'image_apis:generate' %}" class="universal-outline-btn single-btn">Try Generater for free</a>
+        </div>
+    </div>
+</section>
+
+<section class="dreams-section">
+    <div class="container">
+        <div class="dreams-content">
+            <h2 class="title">Effortless image generation for <br>creators with big dreams</h2>
+            <div class="dreams-grid">
+                <div class="dream-item">
+                    <h3>Generate</h3>
+                    <img src="{% static 'img/Generate.jpg' %}" alt="Generate">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                </div>
+                <div class="dream-item">
+                    <h3>Edit <sup>Soon <sup>TM</sup></sup></h3>
+                    <img src="{% static 'img/Edit.jpg' %}" alt="Edit">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                </div>
+                <div class="dream-item">
+                    <h3>Add <sup>Soon <sup>TM</sup></sup></h3>
+                    <img src="{% static 'img/Add.jpg' %}" alt="Add">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                </div>
+                <div class="dream-item">
+                    <h3>Models</h3>
+                    <img src="{% static 'img/Models.jpg' %}" alt="Models">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="generate-section">
+    <div class="container">
+        <div class="generate-content">
+            <span class="theme-badge">Elements IQ</span>
+            <h2 class="title">Go beyond <br> what's possible</h2>
+            <img src="{% static 'img/3.webp' %}" alt="Elements IQ">
+            <p>Explore the realms of your imagination with generate mode.<br> 
+                Achieve your goals with exclusive StableDiffusion models,<br> text to image, image to image, variations and styles.</p>
+        </div>
+    </div>
+</section>
+
+<section class="generate-section">
+    <div class="container">
+        <div class="generate-content">
+            <span class="theme-badge">Elements IQ</span>
+            <h2 class="title">Expand your<br>
+                imagination</h2>
+            <img src="{% static 'img/5.webp' %}" alt="Elements IQ">
+            <p>Improve your creative workflow with the editor.<br>
+                A powerful new way to expand,<br> add and remove items from your images and artwork.</p>
+        </div>
+    </div>
+</section>
+
+<section class="community-section">
+    <div class="community-container">
+        <div class="community-content">
+            <h2 class="title">Community</h2>
+            <div class="community-slider-container">
+                <div class="community-slider">
+                    <div class="community-slide">
+                        <img src="{% static 'img/1.webp' %}" alt="Community">
+                    </div>
+                    <div class="community-slide">
+                        <img src="{% static 'img/2.webp' %}" alt="Community">
+                    </div>
+                    <div class="community-slide">
+                        <img src="{% static 'img/3.webp' %}" alt="Community">
+                    </div>
+                    <div class="community-slide">
+                        <img src="{% static 'img/4.webp' %}" alt="Community">
+                    </div>
+                    <div class="community-slide">
+                        <img src="{% static 'img/5.webp' %}" alt="Community">
+                    </div>
+                    <div class="community-slide">
+                        <img src="{% static 'img/6.webp' %}" alt="Community">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="container">
+        <div class="features-content">
+            <h2 class="title">Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-item-box">
+                        <div class="feature-item-header">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            <h3>History</h3>
+                        </div>
+                        <p>Keep track of everything you've created</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-box">
+                        <div class="feature-item-header">
+                            <i class="fa-solid fa-star-of-david"></i>
+                            <h3>New models</h3>
+                        </div>
+                        <p>Be first to try and test our new models</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-box">
+                        <div class="feature-item-header">
+                            <i class="fa-solid fa-road"></i>
+                            <h3>Multi-generations</h3>
+                        </div>
+                        <p>Explore different creative variations of your image simultaneously</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-box">
+                        <div class="feature-item-header">
+                            <i class="fa-solid fa-palette"></i>
+                            <h3>Styles</h3>
+                        </div>
+                        <p>Be inspired instantly with our different style presets</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-box">
+                        <div class="feature-item-header">
+                            <i class="fa-regular fa-image"></i>
+                            <h3>Canvas</h3>
+                        </div>
+                        <p>An infinite workspace for endless ideas</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-box">
+                        <div class="feature-item-header">
+                            <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                            <h3>Upscaling</h3>
+                        </div>
+                        <p>Enhance and upscale the resolutions of your imagery in seconds</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-box">
+                        <div class="feature-item-header">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            <h3>Masking</h3>
+                        </div>
+                        <p>Remove elements from your image and edit with inpainting</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-box">
+                        <div class="feature-item-header">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <h3>Layers</h3>
+                        </div>
+                        <p>Make more of your creative workflows with layers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="single-btn-section">
+    <div class="container">
+        <div class="single-btn-box">
+            <a href="{% url 'image_apis:generate' %}" class="universal-outline-btn single-btn">Try Generater for free</a>
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -3,12 +3,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div id="prompt-wrapper">
-    <span id="user-tokens">{{userToken}}</span>
-    <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
-    <button id="generate-button" class="universal-btn"><span class="loader"></span>Generate</button>
+<div class="container">
+    <div id="prompt-wrapper">
+        <span id="user-tokens">{{userToken}}</span>
+        <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
+        <button id="generate-button" class="universal-btn"><span class="loader"></span>Generate</button>
+    </div>
+    <div id="image-wrapper" style="max-width: 100%; max-height: 100%;"></div>
 </div>
-<div id="image-wrapper" style="max-width: 100%; max-height: 100%;"></div>
 
 <script>
     

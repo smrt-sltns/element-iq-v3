@@ -20,6 +20,10 @@ jQuery(function($){
         autoplaySpeed: 1000,
         speed: 1000
       });
+
+      $(".toggle").click(function(){
+        $(".sidebar").toggleClass("active")
+      })
 })
 
 

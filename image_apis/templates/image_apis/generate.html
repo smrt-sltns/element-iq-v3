@@ -1,9 +1,47 @@
 
 
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container">
+    <div id="generate-sidebar">
+        <div class="sidebar-header">
+            <button href="#">Generate</button>
+            <button href="#">Edit</button>
+        </div>
+        <div class="generate-panel">
+            <div class="style-box">
+                <span class="subtitle">Style</span>
+                <button class="panel-btn">
+                    <span>Choose Style</span>
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+                <div class="style-dropdown">
+                    <ul class="style-list">
+                        <li>
+                            <img src="{% static 'img/1.webp' %}" alt="Add">
+                        </li>
+                        <li>
+                            <img src="{% static 'img/2.webp' %}" alt="Add">
+                        </li>
+                        <li>
+                            <img src="{% static 'img/3.webp' %}" alt="Add">
+                        </li>
+                        <li>
+                            <img src="{% static 'img/4.webp' %}" alt="Add">
+                        </li>
+                        <li>
+                            <img src="{% static 'img/5.webp' %}" alt="Add">
+                        </li>
+                        <li>
+                            <img src="{% static 'img/6.webp' %}" alt="Add">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="prompt-wrapper">
         <span id="user-tokens">{{userToken}}</span>
         <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">

@@ -13,6 +13,7 @@
     --yellow-color: #fabd48;
     --white-color: #ffffff;
     --black-color: #000000;
+    --border-color: #00000026;
 }
 ::selection{
     background-color: var(--pink-color);
@@ -51,6 +52,7 @@ input[type="checkbox"],input[type="radio"]{
 
 #header{
     padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .wrapper{
@@ -719,10 +721,88 @@ form .helptext, form li{
 }
 #generate-sidebar{
     position: fixed;
-    top: 0;
+    top: 111px;
     left: 0;
     bottom: 0;
-    background-color: var(--black-color);
+    width: 400px;
+    background-color: var(--white-color);
+    z-index: 9;
+    padding: 10px;
+    border-right: 1px solid var(--border-color);
+}
+#generate-sidebar > *{
+    width: 100%;
+}
+.sidebar-header{
+    display: flex;
+    gap: 5px;
+}
+.sidebar-header button{
+    font-size: 18px;
+    width: 50%;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+}
+.sidebar-header button:active{
+    background-color: var(--yellow-color);
+}
+.generate-panel{
+    margin-top: 10px;
+}
+.style-box{
+    position: relative;
+}
+.style-dropdown{
+    position: absolute;
+    top: 0;
+    left: 391px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    width: 400px;
+    background-color: var(--white-color);
+    padding: 10px;
+    visibility: hidden;
+    opacity: 0;
+    transition: .3s;
+}
+.style-list{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    list-style: none;
+    padding-left: 0;
+}
+.style-list li{
+    border: 1px solid var(--border-color);
+}
+.style-list img{
+    width: 100%;
+    height: 125px;
+    object-fit: cover;
+}
+.panel-btn{
+    font-size: 18px;
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    color: var(--primary-color);
+}
+.subtitle{
+    display: block;
+    font-size: 16px;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+.panel-btn:hover+.style-dropdown{
+    visibility: visible;
+    opacity: 100;
 }
 @media screen and (max-width: 768px){
     p{

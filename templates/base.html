@@ -52,6 +52,27 @@
                         </ul>
                     </nav>
                 </div>
+                <aside class="sidebar">
+                    <nav>
+                        <button class="sidebar-close toggle">&#10006;</button>
+                        <ul class="menu">
+                            <li class="active">
+                                <a href="{% url 'dashboard:home' %}">Home</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'image_apis:generate' %}">Generate an Image</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'payment:list-offers' %}">Buy Tokens</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </aside>
+                <div class="toggle-box">
+                    <button class="toggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
                 <div class="user-btns">
                     {% if request.user.is_authenticated %}
                         <a href="{% url 'account:logout' %}" class="universal-outline-btn">Log Out</a>

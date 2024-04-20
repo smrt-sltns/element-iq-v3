@@ -776,6 +776,9 @@ form .helptext, form li{
 .generate-panel{
     margin-top: 10px;
 }
+.generate-panel > *{
+    margin-bottom: 10px;
+}
 .style-box{
     position: relative;
 }
@@ -815,14 +818,53 @@ form .helptext, form li{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     border: 1px solid var(--border-color);
     color: var(--primary-color);
+    position: relative;
+}
+.panel-btn+.panel-btn{
+    margin-top: 10px;
 }
 .subtitle{
     display: block;
     font-size: 16px;
     color: var(--secondary-color);
     margin-bottom: 5px;
+}
+.panel-btn > i{
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: var(--yellow-color);
+}
+.panel-btn p{
+    width: 100%;
+    margin-top: 5px;
+    text-align: start;
+    color: var(--black-color);
+}
+.panel-btn p[contenteditable="true"]{
+    outline: none;
+}
+.upload-gen-btn{
+    display: block;
+}
+.upload-gen-btn > *{
+    display: block;
+    text-align: center;
+}
+.upload-gen-btn i{
+    font-size: 35px;
+    margin-bottom: 5px;
+    color: var(--pink-color);
+}
+.upload-box p{
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
 }
 .panel-btn:hover+.style-dropdown{
     visibility: visible;

@@ -21,12 +21,20 @@ jQuery(function($){
         speed: 1000
       });
 
-      $(".toggle").click(function(){
+      $("#header .toggle").click(function(){
         $(".sidebar").toggleClass("active");
       });
 
       $(".toggle-gen-sidebar").click(function(){
         $(this).parent().toggleClass("active");
+      })
+
+      $(".panel-btn.toggle").click(function(){
+        $(this).find("p").slideToggle();
+      })
+
+      $(".panel-btn.toggle p").click(function(e){
+        e.stopPropagation()
       })
 })
 

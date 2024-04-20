@@ -22,7 +22,11 @@ jQuery(function($){
       });
 
       $(".toggle").click(function(){
-        $(".sidebar").toggleClass("active")
+        $(".sidebar").toggleClass("active");
+      });
+
+      $(".toggle-gen-sidebar").click(function(){
+        $(this).parent().toggleClass("active");
       })
 })
 

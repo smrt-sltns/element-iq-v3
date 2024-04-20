@@ -719,16 +719,40 @@ form .helptext, form li{
     background-color: var(--yellow-color) !important;
     color: var(--white-color) !important;
 }
+.main-container{
+    display: flex;
+    gap: 20px;
+    min-height: calc(100vh - 111px);
+    overflow-x: hidden;
+}
 #generate-sidebar{
-    position: fixed;
-    top: 111px;
-    left: 0;
-    bottom: 0;
+    position: relative;
     width: 400px;
     background-color: var(--white-color);
-    z-index: 9;
     padding: 10px;
     border-right: 1px solid var(--border-color);
+    transition: .3s;
+}
+#generate-sidebar.active{
+    margin-left: 0;
+}
+.toggle-gen-sidebar{
+    position: absolute;
+    top: 0;
+    right: -25px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: transparent;
+    z-index: 5;
+    border: none;
+    outline: none;
+    color: var(--lightgreen-color);
+    display: none;
+    width: auto !important;
+}
+#prompt-wrapper{
+    width: calc(100% - 420px);
+    flex-grow: 1;
 }
 #generate-sidebar > *{
     width: 100%;
@@ -804,6 +828,7 @@ form .helptext, form li{
     visibility: visible;
     opacity: 100;
 }
+
 @media screen and (max-width: 768px){
     p{
         font-size: 16px;
@@ -855,6 +880,12 @@ form .helptext, form li{
     }
     .footer-content{
         justify-content: center;
+    }
+    .toggle-gen-sidebar{
+        display: block;
+    }
+    #generate-sidebar{
+        margin-left: -400px;
     }
 }
 @media screen and (max-width: 640px){

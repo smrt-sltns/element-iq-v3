@@ -4,8 +4,14 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
+<style>
+    #content{
+        min-height: 100%;
+    }
+</style>
+<div class="main-container">
     <div id="generate-sidebar">
+        <button class="toggle-gen-sidebar"><i class="fa-solid fa-bars"></i></button>
         <div class="sidebar-header">
             <button href="#">Generate</button>
             <button href="#">Edit</button>

@@ -53,6 +53,9 @@ def generate_ajax(request):
         prompt = request.POST.get("prompt")
         user_id = request.POST.get("userId")
         response = generate_image(prompt)
+        context["image"] = b'asd'
+
+        """
         if response.status_code == 200:
             user = User.objects.get(id=user_id)
             user.token -= 1
@@ -60,5 +63,7 @@ def generate_ajax(request):
             context["image"] = response.content
         else:
             context["error"] = str(response.json())
+        """
 
+    return HttpResponse(b'asdasd', content_type="image/png")
     return HttpResponse(response.content, content_type="image/png")

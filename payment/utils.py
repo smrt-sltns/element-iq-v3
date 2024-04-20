@@ -5,7 +5,7 @@ from django.conf import settings
 
 stripe.api_key = settings.STRIPE_API_KEY
 
-
+BASE_URL = ""
 PAYMENT_BASE_URL = "http://localhost:8000/payment/"
 
 def create_checkout_session(price_id, username, email):

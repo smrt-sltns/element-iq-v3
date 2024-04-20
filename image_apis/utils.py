@@ -1,6 +1,9 @@
 import requests
+import time
 
 def generate_image(prompt):
+    time.sleep(5)
+    return None
     response = requests.post(
         f"https://api.stability.ai/v2beta/stable-image/generate/core",
         headers={

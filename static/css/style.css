@@ -33,7 +33,7 @@ input:not(input[type="radio"], input[type="checkbox"]), select, textarea{
     min-height: 40px;
     padding: 5px 20px;
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 25px;
 }
 .range-field{
     display: flex;
@@ -918,6 +918,15 @@ form .helptext, form li{
 }
 .settings-box label{
     font-size: 14px;
+}
+.contact-container{
+    padding: 50px 0;
+}
+.contact-container .title{
+    text-align: center;
+}
+.contact-container .universal-btn{
+    margin: 0 auto;
 }
 @media screen and (max-width: 768px){
     p{

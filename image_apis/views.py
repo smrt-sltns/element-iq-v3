@@ -74,12 +74,12 @@ def generate_ajax(request):
             user = User.objects.get(id=user_id)
             user.token -= 1
             user.save()
-            context["user_tokens"] = user.token
+            context["userToken"] = user.token
             image_data = base64.b64encode(response.content).decode('utf-8')
             context["image"] = image_data
         else:
             context["error"] = str(response.json())
-    print(context)
+    
     return JsonResponse(
         context
     )

@@ -8,6 +8,7 @@ from account.auth import admin_only
 from .utils import generate_image
 
 import json
+import base64
 
 
 @csrf_exempt
@@ -64,6 +65,7 @@ def admin_restriction(request):
 @csrf_exempt
 def generate_ajax(request):
     context = {}
+
     if request.method == "POST":
         prompt = request.POST.get("prompt")
         user_id = request.POST.get("userId")
@@ -72,8 +74,13 @@ def generate_ajax(request):
             user = User.objects.get(id=user_id)
             user.token -= 1
             user.save()
-            context["image"] = response.content
+            context["user_tokens"] = user.token
+            image_data = base64.b64encode(response.content).decode('utf-8')
+            context["image"] = image_data
         else:
             context["error"] = str(response.json())
-
-    return HttpResponse(response.content, content_type="image/png")
+    print(context)
+    return JsonResponse(
+        context
+    )
+    # return HttpResponse(response.content, content_type="image/png")

@@ -10,7 +10,7 @@
     }
 
     #download_button{
-        display: block;
+        display: none;
     }
     .download-container{
         display: block;
@@ -20,7 +20,7 @@
     <div id="generate-sidebar">
         <button class="toggle-gen-sidebar"><i class="fa-solid fa-bars"></i></button>
         <div class="sidebar-header">
-            <button href="#">Generate</button>
+            <button href="#" id="generate-button">Generate</button>
             <button href="#">Edit</button>
         </div>
         <div class="generate-panel">
@@ -86,20 +86,21 @@
     const promptInput = document.getElementById("prompt-input");
     const generateButton = document.getElementById("generate-button");
     const imageWrapper = document.getElementById("image-wrapper");
-    const downloadButton = document.getElementById("download_button")
+    const downloadButton = document.getElementById("download_button");
     
 
     // const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
     const base_url = "http://localhost:8000/";
 
-    var userToken = "{{ userToken }}";
+    var userToken = parseInt("{{ userToken }}");
+    const costOfGeneration = 1;
 
     generateButton.onclick = () => {
-        show_loading_for_redirect();
         const prompt = promptInput.value;
-        if( !prompt ){
+        if( !prompt || userToken - costOfGeneration < 0 ){
             return
         }
+        show_loading_for_redirect();
         const form = new FormData();
         form.append("userId", "{{ userId }}");
         form.append("prompt", prompt);
@@ -116,19 +117,34 @@
                     console.log(await response.json());
                     throw new Error("response was not okay")
                 }
-                return response.blob();
-            }).then(blob => {
+                return response.json();
+            }).then(response => {
+                console.log(response.userToken);
+                let imageData = atob(response.image);
+
+                
+                let imageArray = new Uint8Array(imageData.length);
+                for (let i = 0; i < imageData.length; i++) {
+                    imageArray[i] = imageData.charCodeAt(i);
+                }
+
+                // Create a blob from the binary data
+
+                let blob = new Blob([imageArray], { type: 'image/png' });
+
                 const blobUrl = URL.createObjectURL(blob);
+
                 const imageElement = document.createElement('img');
                 imageElement.src = blobUrl;
                 imageElement.style.maxWidth = "100%";
                 imageElement.style.maxHeight = "100%";
                 imageWrapper.innerHTML = null;
                 imageWrapper.appendChild(imageElement);
-                userToken--;
+                userToken = response.userToken;
                 userTokenElement.innerText = userToken;
                 downloadButton.style.display = "block";
                 downloadButton.addEventListener("click", downloadImage);
+
                 // decrease_tokens(1);
                 hide_loading();
             }).catch(e => {

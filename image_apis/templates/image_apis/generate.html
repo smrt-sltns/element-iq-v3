@@ -10,7 +10,7 @@
     }
 
     #download_button{
-        display: block;
+        display: none;
     }
     .download-container{
         display: block;
@@ -19,12 +19,12 @@
 <div class="main-container">
     <div id="generate-sidebar">
         <button class="toggle-gen-sidebar"><i class="fa-solid fa-bars"></i></button>
-        <div class="sidebar-header">
+        <!-- <div class="sidebar-header">
             <button href="#">Generate</button>
             <button href="#">Edit</button>
-        </div>
+        </div> -->
         <div class="generate-panel">
-            <div class="style-box">
+            <!-- <div class="style-box">
                 <span class="subtitle">Style</span>
                 <button class="panel-btn">
                     <span>Choose Style</span>
@@ -52,7 +52,65 @@
                         </li>
                     </ul>
                 </div>
+            </div> -->
+            <div class="pompt-box">
+                <button class="panel-btn toggle">
+                    <span>Prompt</span>
+                    <i class="fa-solid fa-angle-right"></i>
+                    <p contenteditable="true">
+                    Powerful sorceress, flowing robes and mystical staff, standing in dark and ominous forest, mysterious, detailed, high detail, fantasy portrait
+                    </p>
+                </button>
+                <!-- <button class="panel-btn toggle">
+                    <span>Negative Prompt</span>
+                    <i class="fa-solid fa-angle-right"></i>
+                    <p contenteditable="true">
+                        What do you want to avoid?
+                    </p>
+                </button> -->
             </div>
+            <!-- <div class="upload-box">
+                <button class="panel-btn toggle">
+                    <span>Upload image</span>
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    <p style="display: none;">
+                        <label for="upload-img" class="upload-gen-btn">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                            <span>Upload an image to create variations</span>
+                        </label>
+                        <input type="file" name="upload-img" id="upload-img" multiple hidden>
+                    </p>
+                </button>
+            </div> -->
+            <!-- <div class="settings-box">
+                <button class="panel-btn toggle">
+                    <span>Settings</span>
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    <p>
+                        <span class="input-box">
+                            <label for="ratio">Image Ratio</label>
+                            <select name="ratio" id="ratio">
+                                <option value="21 : 9">21 : 9</option>
+                                <option value="16 : 9">16 : 9</option>
+                                <option value="3 : 2">3 : 2</option>
+                                <option value="5 : 4">5 : 4</option>
+                                <option value="1 : 1" selected>1 : 1</option>
+                                <option value="4 : 5">4 : 5</option>
+                                <option value="2 : 3">2 : 3</option>
+                                <option value="9 : 16">9 : 16</option>
+                                <option value="9 : 21">9 : 21</option>
+                            </select>
+                        </span>
+                        <span class="input-box">
+                            <label for="image-count">Image Count</label>
+                            <span class="range-field">
+                                <input type="range" name="image-count" id="image-count" min="1" max="10" step="1" value="3">
+                                <span id="image-count-display">1</span>
+                            </span>
+                        </span>
+                    </p>
+                </button>
+            </div> -->
         </div>
     </div>
     <div id="prompt-wrapper">

@@ -4,16 +4,18 @@
 
 {% block content %}
 
-<div class="offer-wrapper">
-    {% for o in token_offers %}
+<div class="container">
+    <div class="offer-wrapper">
+        {% for o in token_offers %}
         <div class="offer">
             <h3 class="offer-name">{{ o.name }}</h3>
             <span class="offer-price">$ {{ o.price }}</span>
             <span class="offer-token">{{ o.price | floatformat:"-2"}} Tokens</span>
-            <button onclick="handleBuy('{{ o.priceId }}')" class="universal-btn">Buy</button>
+            <button onclick="handleBuy('{{ o.priceId }}')" class="universal-btn">Buy Now</button>
         </div>
         <br><br>
     {% endfor %}
+    </div>
 </div>
 
 <script>

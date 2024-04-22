@@ -116,19 +116,16 @@
     <div id="prompt-wrapper">
         <span id="user-tokens">{{userToken}}</span>
         <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
-        {% if userToken <= 0 %}
-            <div>
-                <p>The {{ userToken }} amount of tokens is not enough to Generate the image</p>
-            </div>
-
-        {% else %}
-            {% if userToken <= 5 %}
-                <div>
-                    <p>The userToken is about to be finished. Please purchas the tokens.</p>
-                </div>
-            {% endif %}
+        <div>
+            <p id="token-message">
+                {% if userToken <= 0 %}
+                    You don't have enough tokens to generate an image. <a href="{% url 'payment:list-offers' %}">Buy Tokens</a>
+                {% elif userToken <= 5 %}
+                    You are running out of tokens. <a href="{% url 'payment:list-offers' %}">Buy Tokens</a>
+                {% endif %}
+            </p>
+        </div>
             <button id="generate-button" class="universal-btn"><span class="loader"></span>Generate</button>
-        {% endif %}
     </div>
     <div id="image-wrapper" style="max-width: 100%; max-height: 100%;">
     </div>
@@ -145,10 +142,14 @@
     const generateButton = document.getElementById("generate-button");
     const imageWrapper = document.getElementById("image-wrapper");
     const downloadButton = document.getElementById("download_button");
+    const tokenMessage = document.getElementById("token-message");
     
 
     // const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
     const base_url = "http://localhost:8000/";
+                    
+    const notEnoughTokensMessage = "You don't have enough tokens to generate an image. <a href=\"{% url 'payment:list-offers' %}\">Buy Tokens</a>"
+    const lowTokensMessage = "You are running out of tokens. <a href=\"{% url 'payment:list-offers' %}\">Buy Tokens</a>"
 
     var userToken = parseInt("{{ userToken }}");
     const costOfGeneration = 1;
@@ -200,6 +201,12 @@
                 imageWrapper.appendChild(imageElement);
                 userToken = response.userToken;
                 userTokenElement.innerText = userToken;
+                console.log(userToken);
+                if( userToken - costOfGeneration < 0 ){
+                    tokenMessage.innerHTML = notEnoughTokensMessage;
+                } else if ( userToken <= 5 ) {
+                    tokenMessage.innerHTML = lowTokensMessage;
+                }
                 downloadButton.style.display = "block";
                 downloadButton.addEventListener("click", downloadImage);
 

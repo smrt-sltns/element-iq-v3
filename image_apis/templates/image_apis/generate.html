@@ -8,6 +8,13 @@
     #content{
         min-height: 100%;
     }
+
+    #download_button{
+        display: none;
+    }
+    .download-container{
+        display: block;
+    }
 </style>
 <div class="main-container">
     <div id="generate-sidebar">
@@ -46,22 +53,29 @@
                     </ul>
                 </div>
             </div> -->
+            <span>Your Tokens: </span><span id="user-tokens">{{userToken}}</span>
+            <div>
+                <p id="token-message">
+                    {% if userToken <= 0 %}
+                        You don't have enough tokens to generate an image. <a href="{% url 'payment:list-offers' %}">Buy Tokens</a>
+                    {% elif userToken <= 5 %}
+                        You are running out of tokens. <a href="{% url 'payment:list-offers' %}">Buy Tokens</a>
+                    {% endif %}
+                </p>
+            </div>
             <div class="pompt-box">
                 <button class="panel-btn toggle">
                     <span>Prompt</span>
                     <i class="fa-solid fa-angle-right"></i>
-                    <p contenteditable="true">
-                    Powerful sorceress, flowing robes and mystical staff, standing in dark and ominous forest, mysterious, detailed, high detail, fantasy portrait
-                    </p>
+                    <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
                 </button>
-                <!-- <button class="panel-btn toggle">
+                <button class="panel-btn toggle">
                     <span>Negative Prompt</span>
                     <i class="fa-solid fa-angle-right"></i>
-                    <p contenteditable="true">
-                        What do you want to avoid?
-                    </p>
-                </button> -->
+                    <input id="negative-prompt-input" type="text" placeholder="What do you want to avoid (example: house)">
+                </button> 
             </div>
+
             <!-- <div class="upload-box">
                 <button class="panel-btn toggle">
                     <span>Upload image</span>
@@ -75,7 +89,7 @@
                     </p>
                 </button>
             </div> -->
-            <!-- <div class="settings-box">
+            <div class="settings-box">
                 <button class="panel-btn toggle">
                     <span>Settings</span>
                     <i class="fa-solid fa-arrow-up-from-bracket"></i>
@@ -85,15 +99,24 @@
                             <select name="ratio" id="ratio">
                                 <option value="21 : 9">21 : 9</option>
                                 <option value="16 : 9">16 : 9</option>
-                                <option value="3 : 2">3 : 2</option>
                                 <option value="5 : 4">5 : 4</option>
+                                <option value="3 : 2">3 : 2</option>
                                 <option value="1 : 1" selected>1 : 1</option>
-                                <option value="4 : 5">4 : 5</option>
                                 <option value="2 : 3">2 : 3</option>
+                                <option value="4 : 5">4 : 5</option>
                                 <option value="9 : 16">9 : 16</option>
                                 <option value="9 : 21">9 : 21</option>
                             </select>
                         </span>
+                        <span class="input-box">
+                            <label for="output-type">Output Type</label>
+                            <select name="output-type" id="output-type">
+                                <option value="png" selected>PNG</option>
+                                <option value="jpeg">JPEG</option>
+                                <option value="webp">WEBP</option>
+                            </select>
+                        </span>
+                        <!--
                         <span class="input-box">
                             <label for="image-count">Image Count</label>
                             <span class="range-field">
@@ -101,18 +124,21 @@
                                 <span id="image-count-display">1</span>
                             </span>
                         </span>
+                        -->
                     </p>
                 </button>
-            </div> -->
+            </div> 
+            <button id="generate-button" class="universal-btn"><span class="loader"></span>Generate</button>
         </div>
     </div>
-    <div id="prompt-wrapper">
-        <span id="user-tokens">{{userToken}}</span>
-        <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
-        <button id="generate-button" class="universal-btn"><span class="loader"></span>Generate</button>
+    
+    <div id="image-wrapper" style="max-width: 100%; max-height: 100%;">
     </div>
-    <div id="image-wrapper" style="max-width: 100%; max-height: 100%;"></div>
+    <div class="download-container">
+        <button id="download_button">Download Image</button>
+    </div>
 </div>
+
 
 <script>
     
@@ -120,18 +146,25 @@
     const promptInput = document.getElementById("prompt-input");
     const generateButton = document.getElementById("generate-button");
     const imageWrapper = document.getElementById("image-wrapper");
+    const downloadButton = document.getElementById("download_button");
+    const tokenMessage = document.getElementById("token-message");
+    
 
-    const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
+    // const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
     const base_url = "http://localhost:8000/";
+                    
+    const notEnoughTokensMessage = "You don't have enough tokens to generate an image. <a href=\"{% url 'payment:list-offers' %}\">Buy Tokens</a>"
+    const lowTokensMessage = "You are running out of tokens. <a href=\"{% url 'payment:list-offers' %}\">Buy Tokens</a>"
 
-    var userToken = "{{ userToken }}";
+    var userToken = parseInt("{{ userToken }}");
+    const costOfGeneration = 1;
 
     generateButton.onclick = () => {
-        show_loading_for_redirect();
         const prompt = promptInput.value;
-        if( !prompt ){
+        if( !prompt || userToken - costOfGeneration < 0 ){
             return
         }
+        show_loading_for_redirect();
         const form = new FormData();
         form.append("userId", "{{ userId }}");
         form.append("prompt", prompt);
@@ -148,56 +181,59 @@
                     console.log(await response.json());
                     throw new Error("response was not okay")
                 }
-                return response.blob();
-            }).then(blob => {
+                return response.json();
+            }).then(response => {
+                console.log(response.userToken);
+                let imageData = atob(response.image);
+
+                
+                let imageArray = new Uint8Array(imageData.length);
+                for (let i = 0; i < imageData.length; i++) {
+                    imageArray[i] = imageData.charCodeAt(i);
+                }
+
+                // Create a blob from the binary data
+
+                let blob = new Blob([imageArray], { type: 'image/png' });
+
                 const blobUrl = URL.createObjectURL(blob);
+
                 const imageElement = document.createElement('img');
                 imageElement.src = blobUrl;
                 imageElement.style.maxWidth = "100%";
                 imageElement.style.maxHeight = "100%";
                 imageWrapper.innerHTML = null;
                 imageWrapper.appendChild(imageElement);
-                userToken--;
+                userToken = response.userToken;
                 userTokenElement.innerText = userToken;
+                console.log(userToken);
+                if( userToken - costOfGeneration < 0 ){
+                    tokenMessage.innerHTML = notEnoughTokensMessage;
+                } else if ( userToken <= 5 ) {
+                    tokenMessage.innerHTML = lowTokensMessage;
+                }
+                downloadButton.style.display = "block";
+                downloadButton.addEventListener("click", downloadImage);
+
                 // decrease_tokens(1);
                 hide_loading();
             }).catch(e => {
                 console.error(e);
             });
-        /*
-        fetch(
-            stabilityAiGenerateUrl,
-            {
-                method: "POST",
-                body: form,
-                headers: {
-                    Authorization: "Bearer {{api_key}}",
-                    Accept: "image/*",
-                },
-                validateStatus: undefined,
-                responseType: "arraybuffer",
-            }
-            ).then(async response => {
-                if(!response.ok){
-                    console.log(await response.json());
-                    throw new Error("response was not okay")
-                }
-                return response.arrayBuffer();
-            }).then(data => {
-                const blob = new Blob([data]);
-                const blobUrl = URL.createObjectURL(blob);
-                const imageElement = document.createElement('img');
-                imageElement.src = blobUrl;
-                imageElement.style.maxWidth = "100%";
-                imageElement.style.maxHeight = "100%";
-                imageWrapper.innerHTML = null;
-                imageWrapper.appendChild(imageElement);
-                decrease_tokens(1);
-                hide_loading();
-            }).catch(e => {
-                console.error(e);
-            });
-            */
+        }
+        
+        function downloadImage() {
+            const imageSrc = document.getElementById("image-wrapper").getElementsByTagName("img")[0].src;
+
+            const downloadLink = document.createElement("a");
+            downloadLink.href = imageSrc;
+            downloadLink.download = "generated_image.png";
+
+            document.body.appendChild(downloadLink);
+            
+            downloadLink.click();
+
+            document.body.removeChild(downloadLink);
         }
 
         function decrease_tokens(amount) {

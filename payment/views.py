@@ -11,11 +11,12 @@ from django.contrib.auth.decorators import login_required
 from account.models import User
 from .models import TokenOffer
 from .utils import create_checkout_session
-
+from account.auth import admin_only
 
 stripe.api_key = settings.STRIPE_API_KEY
 
 @csrf_exempt
+@admin_only
 @login_required
 def list_offers(request):
 

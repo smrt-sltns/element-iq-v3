@@ -26,8 +26,8 @@ def decrease_tokens(request):
 
     return JsonResponse({"status": "ok", "remainingTokens": user.token})
 
-@admin_only
 @login_required
+@admin_only
 def generate(request):
 
     context = {

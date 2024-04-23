@@ -33,7 +33,7 @@ input:not(input[type="radio"], input[type="checkbox"]), select, textarea{
     min-height: 40px;
     padding: 5px 20px;
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 25px;
 }
 .range-field{
     display: flex;
@@ -774,6 +774,7 @@ form .helptext, form li{
     padding: 10px;
     border-right: 1px solid var(--border-color);
     transition: .3s;
+    flex-shrink: 0;
 }
 #generate-sidebar.active{
     margin-left: 0;
@@ -869,6 +870,9 @@ form .helptext, form li{
 .panel-btn+.panel-btn{
     margin-top: 10px;
 }
+.panel-btn input{
+    margin-top: 10px;
+}
 .subtitle{
     display: block;
     font-size: 16px;
@@ -918,6 +922,26 @@ form .helptext, form li{
 }
 .settings-box label{
     font-size: 14px;
+}
+.contact-container{
+    padding: 50px 0;
+}
+.contact-container .title{
+    text-align: center;
+}
+.contact-container .universal-btn{
+    margin: 0 auto;
+}
+.output-container{
+    flex-grow: 1;
+    padding: 20px;
+    text-align: center;
+}
+.download-container{
+    margin-top: 20px;
+}
+#download_button{
+    margin: 0 auto;
 }
 @media screen and (max-width: 768px){
     p{

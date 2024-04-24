@@ -19,6 +19,11 @@
         margin: 20px;
         justify-content: center;
     }
+    #error-message{
+        color: darkred;
+        margin-top: 16px;
+        margin-bottom: 10px;
+    }
 </style>
 <div class="main-container">
     <div id="generate-sidebar">
@@ -66,6 +71,7 @@
                         You are running out of tokens. <a href="{% url 'payment:list-offers' %}">Buy Tokens</a>
                     {% endif %}
                 </p>
+                <p id="error-message"></p>
             </div>
             <div class="pompt-box">
                 <button class="panel-btn toggle">
@@ -101,15 +107,15 @@
                         <span class="input-box">
                             <label for="ratio">Image Ratio</label>
                             <select name="ratio" id="ratio">
-                                <option value="21 : 9">21 : 9</option>
-                                <option value="16 : 9">16 : 9</option>
-                                <option value="5 : 4">5 : 4</option>
-                                <option value="3 : 2">3 : 2</option>
+                                <option value="21:9">21 : 9</option>
+                                <option value="16:9">16 : 9</option>
+                                <option value="5:4">5 : 4</option>
+                                <option value="3:2">3 : 2</option>
                                 <option value="1 : 1" selected>1 : 1</option>
-                                <option value="2 : 3">2 : 3</option>
-                                <option value="4 : 5">4 : 5</option>
-                                <option value="9 : 16">9 : 16</option>
-                                <option value="9 : 21">9 : 21</option>
+                                <option value="2:3">2 : 3</option>
+                                <option value="4:5">4 : 5</option>
+                                <option value="9:16">9 : 16</option>
+                                <option value="9:21">9 : 21</option>
                             </select>
                         </span>
                         <span class="input-box">
@@ -150,10 +156,16 @@
     
     const userTokenElement = document.getElementById("user-tokens");
     const promptInput = document.getElementById("prompt-input");
+    const negativePromptInput = document.getElementById("negative-prompt-input");
+    const ratioInput = document.getElementById("ratio");
+    const outputFormatInput = document.getElementById("output-type");
     const generateButton = document.getElementById("generate-button");
     const imageWrapper = document.getElementById("image-wrapper");
     const downloadButton = document.getElementById("download_button");
     const tokenMessage = document.getElementById("token-message");
+    const errorMessage = document.getElementById("error-message");
+
+    let globalOutputFormat = "png";
     
 
     // const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
@@ -167,6 +179,11 @@
 
     generateButton.onclick = () => {
         const prompt = promptInput.value;
+        const negativePrompt = negativePromptInput.value;
+        const outputFormat = outputFormatInput.value;
+        const ratio = ratioInput.value;
+
+        globalOutputFormat = outputFormat;
         if( !prompt || userToken - costOfGeneration < 0 ){
             return
         }
@@ -174,7 +191,9 @@
         const form = new FormData();
         form.append("userId", "{{ userId }}");
         form.append("prompt", prompt);
-        form.append("output_format", "png");
+        form.append("negative_prompt", negativePrompt);
+        form.append("output_format", outputFormat);
+        form.append("ratio", ratio);
         
         fetch(
             "{% url 'image_apis:generate-ajax' %}",
@@ -189,6 +208,11 @@
                 }
                 return response.json();
             }).then(response => {
+                if (response.error){
+                    errorMessage.innerHTML = "Something failed while generating the image";
+                    hide_loading();
+                    return;
+                }
                 console.log(response.userToken);
                 let imageData = atob(response.image);
 
@@ -225,6 +249,8 @@
                 hide_loading();
             }).catch(e => {
                 console.error(e);
+                errorMessage.innerHTML = e.toString();
+
             });
         }
         
@@ -233,7 +259,7 @@
 
             const downloadLink = document.createElement("a");
             downloadLink.href = imageSrc;
-            downloadLink.download = "generated_image.png";
+            downloadLink.download = "generated_image." + globalOutputFormat;
 
             document.body.appendChild(downloadLink);
             

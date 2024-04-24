@@ -1,6 +1,6 @@
 import requests
 
-def generate_image(prompt):
+def generate_image(prompt,negative_prompt="",output_format="png",aspect_ratio="1:1"):
     response = requests.post(
         f"https://api.stability.ai/v2beta/stable-image/generate/core",
         headers={
@@ -12,7 +12,9 @@ def generate_image(prompt):
         },
         data={
             "prompt": prompt,
-            "output_format": "png",
+            "negative_prompt": negative_prompt,
+            "output_format": output_format,
+            "aspect_ratio": aspect_ratio,
         },
     )
     return response
@@ -27,3 +29,5 @@ def generate_image(prompt):
 """
 curl -f -sS "https://api.stability.ai/v2beta/stable-image/generate/core" -H "authorization: Bearer sk-saMcB871NueeMnAO3SYpTwNiGRyz2D5t1rZtQBI9vfG56wF1" -H "accept: image/*" -F prompt="Lighthouse on a cliff overlooking the ocean" -F output_format="webp" -o "./lighthouse.webp"
 """
+
+

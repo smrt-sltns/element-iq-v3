@@ -165,7 +165,7 @@ SOCIAL_AUTH_JSONFIELD_ENABLED = True
 LOGIN_URL = reverse_lazy('account:login')
 LOGOUT_REDIRECT_URL = reverse_lazy('account:login') 
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = reverse_lazy('image_apis:generate')
 SOCIAL_AUTH_LOGIN_ERROR_URL = reverse_lazy('account:login')
 SOCIAL_AUTH_LOGIN_URL = reverse_lazy('account:login')
 

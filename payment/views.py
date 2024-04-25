@@ -53,11 +53,12 @@ def checkout_session(request):
         user = request.user
         user.stripe_session = checkout_session['id']
         cents = checkout_session['amount_total']
-        user.token += int(cents/5)
-        user.save()
-        print(user.email+' bought ' + str(int(cents/5)) + 'tokens!')
 
-    return redirect("dashboard:home")
+        user.token += int(cents/3)
+        user.save()
+        print(user.email+' bought ' + str(int(cents/3)) + ' tokens!')
+
+    return redirect("image_apis:generate")
 
 
 

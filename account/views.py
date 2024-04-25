@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from .forms import SignUpForm, LoginForm
 
-HOME_URL_NAME = "dashboard:home"  # "index"
+HOME_URL_NAME = "image_apis:generate"  # "index"
 
 def register(request):
     if request.method == 'POST':

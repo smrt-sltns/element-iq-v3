@@ -505,19 +505,40 @@ input[type="checkbox"],input[type="radio"]{
     left: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    background: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+    background: rgb(255, 255, 255); /* Black background with opacity */
     display: none;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     z-index: 9999; /* High z-index to be on top of other content */
+}
+.loading-content{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.loading-content h3{
+    font-size: 14px;
+    font-weight: 400;
+    transition: .3s;
+    animation: fade 2s linear infinite;
+}
+
+@keyframes fade {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 .spinner {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid #3498db; /* Blue */
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
+    margin: 20px auto;
     animation: spin 2s linear infinite;
 }
 
@@ -966,6 +987,13 @@ form .helptext, form li{
     }
     input{
         height: 40px;
+    }
+    .loading-content h3{
+        font-size: 10px;
+    }
+    .spinner{
+        width: 60px;
+        height: 60px;
     }
     .navbar a, .universal-btn, .universal-outline-btn{
         padding: 5px 15px;

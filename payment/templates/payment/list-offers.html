@@ -10,7 +10,7 @@
         <div class="offer">
             <h3 class="offer-name">{{ o.name }}</h3>
             <span class="offer-price">$ {{ o.price }}</span>
-            <span class="offer-token">{{ o.price | floatformat:"-2"}} Tokens</span>
+            <!-- <span class="offer-token">{{ o.price | floatformat:"-2"}} Tokens</span> -->
             <button onclick="handleBuy('{{ o.priceId }}')" class="universal-btn">Buy Now</button>
         </div>
         <br><br>

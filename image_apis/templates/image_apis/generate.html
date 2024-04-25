@@ -4,14 +4,36 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
+<style>
+    #content{
+        min-height: 100%;
+    }
+
+    #download_button{
+        display: none;
+        margin: auto;
+    }
+    .download-container{
+        display: block;
+        width: 100%;
+        margin: 20px;
+        justify-content: center;
+    }
+    #error-message{
+        color: darkred;
+        margin-top: 16px;
+        margin-bottom: 10px;
+    }
+</style>
+<div class="main-container">
     <div id="generate-sidebar">
-        <div class="sidebar-header">
-            <button href="#" id="generate-button">Generate</button>
+        <button class="toggle-gen-sidebar"><i class="fa-solid fa-bars"></i></button>
+        <!-- <div class="sidebar-header">
+            <button href="#">Generate</button>
             <button href="#">Edit</button>
-        </div>
+        </div> -->
         <div class="generate-panel">
-            <div class="style-box">
+            <!-- <div class="style-box">
                 <span class="subtitle">Style</span>
                 <button class="panel-btn">
                     <span>Choose Style</span>
@@ -39,39 +61,139 @@
                         </li>
                     </ul>
                 </div>
+            </div> -->
+            <span>Your Tokens: </span><span id="user-tokens">{{userToken}}</span>
+            <div>
+                <p id="token-message">
+                    {% if userToken <= 0 %}
+                        You don't have enough tokens to generate an image. <a href="{% url 'payment:list-offers' %}">Buy Tokens</a>
+                    {% elif userToken <= 5 %}
+                        You are running out of tokens. <a href="{% url 'payment:list-offers' %}">Buy Tokens</a>
+                    {% endif %}
+                </p>
+                <p id="error-message"></p>
             </div>
+            <div class="pompt-box">
+                <button class="panel-btn toggle">
+                    <span>Prompt</span>
+                    <i class="fa-solid fa-angle-right"></i>
+                    <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
+                </button>
+                <button class="panel-btn toggle">
+                    <span>Negative Prompt</span>
+                    <i class="fa-solid fa-angle-right"></i>
+                    <input id="negative-prompt-input" type="text" placeholder="What do you want to avoid (example: house)">
+                </button> 
+            </div>
+
+            <!-- <div class="upload-box">
+                <button class="panel-btn toggle">
+                    <span>Upload image</span>
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    <p style="display: none;">
+                        <label for="upload-img" class="upload-gen-btn">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                            <span>Upload an image to create variations</span>
+                        </label>
+                        <input type="file" name="upload-img" id="upload-img" multiple hidden>
+                    </p>
+                </button>
+            </div> -->
+            <div class="settings-box">
+                <button class="panel-btn toggle">
+                    <span>Settings</span>
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    <p>
+                        <span class="input-box">
+                            <label for="ratio">Image Ratio</label>
+                            <select name="ratio" id="ratio">
+                                <option value="21:9">21 : 9</option>
+                                <option value="16:9">16 : 9</option>
+                                <option value="5:4">5 : 4</option>
+                                <option value="3:2">3 : 2</option>
+                                <option value="1:1" selected>1 : 1</option>
+                                <option value="2:3">2 : 3</option>
+                                <option value="4:5">4 : 5</option>
+                                <option value="9:16">9 : 16</option>
+                                <option value="9:21">9 : 21</option>
+                            </select>
+                        </span>
+                        <span class="input-box">
+                            <label for="output-type">Output Type</label>
+                            <select name="output-type" id="output-type">
+                                <option value="png" selected>PNG</option>
+                                <option value="jpeg">JPEG</option>
+                                <option value="webp">WEBP</option>
+                            </select>
+                        </span>
+                        <!--
+                        <span class="input-box">
+                            <label for="image-count">Image Count</label>
+                            <span class="range-field">
+                                <input type="range" name="image-count" id="image-count" min="1" max="10" step="1" value="3">
+                                <span id="image-count-display">1</span>
+                            </span>
+                        </span>
+                        -->
+                    </p>
+                </button>
+            </div> 
+            <button id="generate-button" class="universal-btn"><span class="loader"></span>Generate</button>
         </div>
     </div>
-    <div id="prompt-wrapper">
-        <span id="user-tokens">{{userToken}}</span>
-        <input id="prompt-input" type="text" placeholder="Prompt (example: a dog wearing sunglasses)">
-        <button id="generate-button" class="universal-btn"><span class="loader"></span>Generate</button>
+    
+    <div class="output-container">
+        <div id="image-wrapper" style="max-width: 100%; max-height: 100%;">
+        </div>
+        <div class="download-container">
+            <button id="download_button" class="universal-btn">Download Image</button>
+        </div>
     </div>
-    <div id="image-wrapper" style="max-width: 100%; max-height: 100%;"></div>
 </div>
+
 
 <script>
     
     const userTokenElement = document.getElementById("user-tokens");
     const promptInput = document.getElementById("prompt-input");
+    const negativePromptInput = document.getElementById("negative-prompt-input");
+    const ratioInput = document.getElementById("ratio");
+    const outputFormatInput = document.getElementById("output-type");
     const generateButton = document.getElementById("generate-button");
     const imageWrapper = document.getElementById("image-wrapper");
+    const downloadButton = document.getElementById("download_button");
+    const tokenMessage = document.getElementById("token-message");
+    const errorMessage = document.getElementById("error-message");
 
-    const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
+    let globalOutputFormat = "png";
+    
+
+    // const stabilityAiGenerateUrl = "https://api.stability.ai/v2beta/stable-image/generate/core";
     const base_url = "http://localhost:8000/";
+                    
+    const notEnoughTokensMessage = "You don't have enough tokens to generate an image. <a href=\"{% url 'payment:list-offers' %}\">Buy Tokens</a>"
+    const lowTokensMessage = "You are running out of tokens. <a href=\"{% url 'payment:list-offers' %}\">Buy Tokens</a>"
 
-    var userToken = "{{ userToken }}";
+    var userToken = parseInt("{{ userToken }}");
+    const costOfGeneration = 1;
 
     generateButton.onclick = () => {
-        show_loading_for_redirect();
         const prompt = promptInput.value;
-        if( !prompt ){
+        const negativePrompt = negativePromptInput.value;
+        const outputFormat = outputFormatInput.value;
+        const ratio = ratioInput.value;
+
+        globalOutputFormat = outputFormat;
+        if( !prompt || userToken - costOfGeneration < 0 ){
             return
         }
+        show_loading_for_redirect();
         const form = new FormData();
         form.append("userId", "{{ userId }}");
         form.append("prompt", prompt);
-        form.append("output_format", "png");
+        form.append("negative_prompt", negativePrompt);
+        form.append("output_format", outputFormat);
+        form.append("ratio", ratio);
         
         fetch(
             "{% url 'image_apis:generate-ajax' %}",
@@ -84,56 +206,66 @@
                     console.log(await response.json());
                     throw new Error("response was not okay")
                 }
-                return response.blob();
-            }).then(blob => {
+                return response.json();
+            }).then(response => {
+                if (response.error){
+                    errorMessage.innerHTML = "Something failed while generating the image";
+                    hide_loading();
+                    return;
+                }
+                console.log(response.userToken);
+                let imageData = atob(response.image);
+
+                
+                let imageArray = new Uint8Array(imageData.length);
+                for (let i = 0; i < imageData.length; i++) {
+                    imageArray[i] = imageData.charCodeAt(i);
+                }
+
+                // Create a blob from the binary data
+
+                let blob = new Blob([imageArray], { type: 'image/png' });
+
                 const blobUrl = URL.createObjectURL(blob);
+
                 const imageElement = document.createElement('img');
                 imageElement.src = blobUrl;
                 imageElement.style.maxWidth = "100%";
                 imageElement.style.maxHeight = "100%";
                 imageWrapper.innerHTML = null;
                 imageWrapper.appendChild(imageElement);
-                userToken--;
+                userToken = response.userToken;
                 userTokenElement.innerText = userToken;
+                console.log(userToken);
+                if( userToken - costOfGeneration < 0 ){
+                    tokenMessage.innerHTML = notEnoughTokensMessage;
+                } else if ( userToken <= 5 ) {
+                    tokenMessage.innerHTML = lowTokensMessage;
+                }
+                downloadButton.style.display = "block";
+                downloadButton.addEventListener("click", downloadImage);
+
                 // decrease_tokens(1);
                 hide_loading();
             }).catch(e => {
                 console.error(e);
+                errorMessage.innerHTML = e.toString();
+
             });
-        /*
-        fetch(
-            stabilityAiGenerateUrl,
-            {
-                method: "POST",
-                body: form,
-                headers: {
-                    Authorization: "Bearer {{api_key}}",
-                    Accept: "image/*",
-                },
-                validateStatus: undefined,
-                responseType: "arraybuffer",
-            }
-            ).then(async response => {
-                if(!response.ok){
-                    console.log(await response.json());
-                    throw new Error("response was not okay")
-                }
-                return response.arrayBuffer();
-            }).then(data => {
-                const blob = new Blob([data]);
-                const blobUrl = URL.createObjectURL(blob);
-                const imageElement = document.createElement('img');
-                imageElement.src = blobUrl;
-                imageElement.style.maxWidth = "100%";
-                imageElement.style.maxHeight = "100%";
-                imageWrapper.innerHTML = null;
-                imageWrapper.appendChild(imageElement);
-                decrease_tokens(1);
-                hide_loading();
-            }).catch(e => {
-                console.error(e);
-            });
-            */
+        }
+        
+        function downloadImage() {
+            const imageSrc = document.getElementById("image-wrapper").getElementsByTagName("img")[0].src;
+
+            const downloadLink = document.createElement("a");
+            downloadLink.href = imageSrc;
+            downloadLink.download = "generated_image." + globalOutputFormat;
+
+            document.body.appendChild(downloadLink);
+            
+            downloadLink.click();
+
+            document.body.removeChild(downloadLink);
         }
 
         function decrease_tokens(amount) {

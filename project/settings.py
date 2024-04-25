@@ -38,8 +38,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     # 'pic2text.www.smartmgr.com',
-    'smart-util.com',
-    'www.smart-util.com',
+    'element-iq.com',
+    'www.element-iq.com',
     'localhost',
 ]
 
@@ -157,7 +157,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SESSION_COOKIE_AGE = 3600  # 1 hour in seconds
+SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
@@ -165,7 +165,7 @@ SOCIAL_AUTH_JSONFIELD_ENABLED = True
 LOGIN_URL = reverse_lazy('account:login')
 LOGOUT_REDIRECT_URL = reverse_lazy('account:login') 
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = reverse_lazy('dashboard:index')
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = reverse_lazy('dashboard:home')
 SOCIAL_AUTH_LOGIN_ERROR_URL = reverse_lazy('account:login')
 SOCIAL_AUTH_LOGIN_URL = reverse_lazy('account:login')
 

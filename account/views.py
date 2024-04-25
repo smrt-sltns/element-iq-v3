@@ -29,11 +29,14 @@ def user_login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                next_url = request.GET.get('next')
+                if next_url:
+                    return redirect(next_url)
                 return redirect(HOME_URL_NAME)
-            user = authenticate(email=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect(HOME_URL_NAME)
+            # user = authenticate(email=username, password=password)
+            # if user is not None:
+            #     login(request, user)
+            #     return redirect(HOME_URL_NAME)
             context["errors"] = "Invalid Credentials"
     else:
         form = LoginForm()

@@ -5,23 +5,64 @@
 {% block content %}
 
 <div class="container">
-    <div class="offer-wrapper">
-        {% for o in token_offers %}
-        <div class="offer">
-            <h3 class="offer-name">{{ o.name }}</h3>
-            <span class="offer-price">$ {{ o.price }}</span>
-            <!-- <span class="offer-token">{{ o.price | floatformat:"-2"}} Tokens</span> -->
-            <button onclick="handleBuy('{{ o.priceId }}')" class="universal-btn">Buy Now</button>
-        </div>
-        <br><br>
-    {% endfor %}
+    <div style="text-align: center;">
+        <select id="token_offers_dropdown" onchange="handleDropdownChange()">
+            <option value="">Select a Token offer</option>
+            {% for o in token_offers %}
+                <option value="{{ o.priceId }}">{{ o.name }} - ${{ o.price }}</option>
+            {% endfor %}
+        </select>
     </div>
-</div>
 
+    <div class="offer-wrapper" id="offer-section">
+        {% comment %}
+        {% for o in token_offers %}
+            <div class="offer">
+                <h3 class="offer-name">{{ o.name }}</h3>
+                <span class="offer-price">$ {{ o.price }}</span>
+                <!-- <span class="offer-token">{{ o.price | floatformat:"-2"}} Tokens</span> -->
+                <button onclick="handleBuy('{{ o.priceId }}')" class="universal-btn">Buy Now</button>
+            </div>
+            <br><br>
+        {% endfor %}
+        {% endcomment %}
+    </div>
+
+</div>
+<script>
+    var tokenOffers = [
+        {% for o in token_offers %}
+            {
+                name: "{{ o.name }}",
+                price: "{{ o.price }}",
+                priceId: "{{ o.priceId }}"
+            },
+        {% endfor %}
+    ];
+</script>
 <script>
     const publishableKey = "{{ STRIPE_PUBLISHABLE_KEY }}";
     const username = "{{ request.user.username }}";
     const email = "{{ request.user.email }}";
+
+    const handleDropdownChange = () => {
+        let dropDown = document.getElementById("token_offers_dropdown");
+        let selectedPriceId = dropDown.options[dropDown.selectedIndex].value;
+        let selectedPriceText = dropDown.options[dropDown.selectedIndex].text;
+        
+        let selectedOffer = tokenOffers.find(function (offer) {
+            return offer.priceId === selectedPriceId;
+        });
+        
+        
+        let offerWrapper = document.getElementById("offer-section");
+        offerWrapper.innerHTML = `
+            <div class="offer">
+                <h3 class="offer-name">${selectedOffer.name}</h3>
+                <span class="offer-price">$ ${selectedOffer.price}</span>
+                <button onclick="handleBuy('${selectedOffer.priceId}')" class="universal-btn">Buy Now</button>
+            </div>`;
+    }
     const handleBuy = ( priceId ) => {
         show_loading_for_redirect();
     const data = { 

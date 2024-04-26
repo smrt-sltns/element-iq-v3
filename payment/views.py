@@ -52,9 +52,12 @@ def checkout_session(request):
     if checkout_session != None:
         user = request.user
         user.stripe_session = checkout_session['id']
-        cents = checkout_session['amount_total']
-
-        user.token += int(cents/3)
+        cents = int(checkout_session['amount_total'])
+        print(checkout_session)
+        if cents == 50:
+            user.token += 10
+        elif cents == 300:
+            user.token += int(cents/3)
         user.save()
         print(user.email+' bought ' + str(int(cents/3)) + ' tokens!')
 

@@ -566,6 +566,11 @@ input[type="checkbox"],input[type="radio"]{
     width: 100%;
     max-width: 300px;
 }
+#token_offers_dropdown{
+    margin:20px;
+    width:auto;
+    justify-content: center;
+}
 .offer-wrapper{
     text-align: center;
     display: flex;

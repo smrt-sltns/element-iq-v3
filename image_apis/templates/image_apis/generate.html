@@ -213,7 +213,6 @@
                     hide_loading();
                     return;
                 }
-                console.log(response.userToken);
                 let imageData = atob(response.image);
 
                 
@@ -221,8 +220,6 @@
                 for (let i = 0; i < imageData.length; i++) {
                     imageArray[i] = imageData.charCodeAt(i);
                 }
-
-                // Create a blob from the binary data
 
                 let blob = new Blob([imageArray], { type: 'image/png' });
 
@@ -236,7 +233,6 @@
                 imageWrapper.appendChild(imageElement);
                 userToken = response.userToken;
                 userTokenElement.innerText = userToken;
-                console.log(userToken);
                 if( userToken - costOfGeneration < 0 ){
                     tokenMessage.innerHTML = notEnoughTokensMessage;
                 } else if ( userToken <= 5 ) {
@@ -245,7 +241,6 @@
                 downloadButton.style.display = "block";
                 downloadButton.addEventListener("click", downloadImage);
 
-                // decrease_tokens(1);
                 hide_loading();
             }).catch(e => {
                 console.error(e);
@@ -266,32 +261,6 @@
             downloadLink.click();
 
             document.body.removeChild(downloadLink);
-        }
-
-        function decrease_tokens(amount) {
-            const form = new FormData();
-            form.append("userId", "{{userId}}");
-            form.append("amount", amount);
-
-            fetch(
-            base_url + "image/decrease-tokens/",
-            {
-                method: "POST",
-                body: form,
-            }
-            ).then(async response => {
-                if(!response.ok){
-                    throw new Error("response was not okay")
-                }
-                return response.json();
-            }).then(data => {
-
-                userToken = data.remainingTokens;
-                userTokenElement.innerText = userToken;
-
-            }).catch(e => {
-                console.error(e);
-            });
         }
 
 </script>

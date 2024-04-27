@@ -73,33 +73,23 @@ def generate_ajax(request):
         output_format = request.POST.get("output_format")
         ratio = request.POST.get("ratio")
 
-        response = generate_image(prompt,negative_prompt=negative_prompt,
-                                  output_format=output_format,aspect_ratio=ratio)
-        
-        if response.status_code == 200:
-            user = User.objects.get(id=user_id)
-            user.token -= 1
-            user.save()
-            context["userToken"] = user.token
-            image_data = base64.b64encode(response.content).decode('utf-8')
-            context["image"] = image_data
-
-        # elif response.status_code == 400:
-        #     respCont = response.json()
-        #     respCont["message"] = "Error in the field of the requests"
-        #     context["error"] = str(respCont)
-        # elif response.status_code == 403:
-        #     respCont = response.json()
-        #     respCont["message"] = "Flagged By content moderation"
-        #     context["error"] = str(respCont)
-        # elif response.status_code == 429:
-        #     respCont = response.json()
-        #     respCont["message"] = "Please wait to make any further request."
-        #     context["error"] = str(respCont)
-        else:
-            context["error"] = str(response.json())
+        try:
+            response = generate_image(prompt,negative_prompt=negative_prompt,
+                                    output_format=output_format,aspect_ratio=ratio)
+            
+            if response.status_code == 200:
+                user = User.objects.get(id=user_id)
+                user.token -= 1
+                user.save()
+                context["userToken"] = user.token
+                image_data = base64.b64encode(response.content).decode('utf-8')
+                context["image"] = image_data
+            else:
+                context["error"] = str(response.json())
+        except Exception as e:
+            print(e)
+            context["error"] = "There was an error generating the image"
     
     return JsonResponse(
         context
     )
-    # return HttpResponse(response.content, content_type="image/png")

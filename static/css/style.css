@@ -566,6 +566,11 @@ input[type="checkbox"],input[type="radio"]{
     width: 100%;
     max-width: 300px;
 }
+#token_offers_dropdown{
+    margin:20px;
+    width:auto;
+    justify-content: center;
+}
 .offer-wrapper{
     text-align: center;
     display: flex;
@@ -963,6 +968,11 @@ form .helptext, form li{
 }
 #download_button{
     margin: 0 auto;
+}
+.copyright strong{
+    font-size: 18px;
+    color: var(--white-color);
+    font-weight: 400;
 }
 @media screen and (max-width: 768px){
     p{

@@ -15,9 +15,9 @@ from account.auth import admin_only
 
 stripe.api_key = settings.STRIPE_API_KEY
 
+# @admin_only
 @csrf_exempt
 @login_required
-@admin_only
 def list_offers(request):
 
     if request.method == "POST":
@@ -29,7 +29,7 @@ def list_offers(request):
         return JsonResponse({"redirect_url": redirect_url})
 
     context = {}
-    token_offers = TokenOffer.objects.all()
+    token_offers = TokenOffer.objects.all().order_by('price')
 
     context["token_offers"] = [
         {
@@ -52,11 +52,31 @@ def checkout_session(request):
     if checkout_session != None:
         user = request.user
         user.stripe_session = checkout_session['id']
-        cents = checkout_session['amount_total']
-
-        user.token += int(cents/3)
+        cents = int(checkout_session['amount_total'])
+        
+        if cents == 50:
+            tokenValue = 10
+        elif cents == 75:
+            tokenValue = 20
+        elif cents == 100:
+            tokenValue = 30
+        elif cents == 125:
+            tokenValue = 40
+        elif cents == 150:
+            tokenValue = 50
+        elif cents == 200:
+            tokenValue = 60
+        elif cents == 225:
+            tokenValue = 70
+        elif cents == 250:
+            tokenValue = 80
+        elif cents == 275:
+            tokenValue = 90
+        elif cents == 300:
+            tokenValue = 100
+        user.token += tokenValue
         user.save()
-        print(user.email+' bought ' + str(int(cents/3)) + ' tokens!')
+        print(user.email+' bought ' + str(tokenValue) + ' tokens!')
 
     return redirect("image_apis:generate")
 

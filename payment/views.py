@@ -29,7 +29,7 @@ def list_offers(request):
         return JsonResponse({"redirect_url": redirect_url})
 
     context = {}
-    token_offers = TokenOffer.objects.all()
+    token_offers = TokenOffer.objects.all().order_by('price')
 
     context["token_offers"] = [
         {

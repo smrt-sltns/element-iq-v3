@@ -7,7 +7,7 @@
 <div class="container">
     <div style="text-align: center;">
         <select id="token_offers_dropdown" onchange="handleDropdownChange()">
-            <option value="">Select a Token offer</option>
+            <!-- <option value="">Select a Token offer</option> -->
             {% for o in token_offers %}
                 <option value="{{ o.priceId }}">{{ o.name }} - ${{ o.price }}</option>
             {% endfor %}
@@ -15,6 +15,12 @@
     </div>
 
     <div class="offer-wrapper" id="offer-section">
+        <div class="offer">
+            <h3 class="offer-name">{{ token_offers.0.name }}</h3>
+            <span class="offer-price">$ {{ token_offers.0.price }}</span>
+            <!-- <span class="offer-token">{{ o.price | floatformat:"-2"}} Tokens</span> -->
+            <button onclick="handleBuy('{{ token_offers.0.priceId }}')" class="universal-btn">Buy Now</button>
+        </div>
     </div>
 
 </div>

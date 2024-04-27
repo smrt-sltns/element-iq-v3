@@ -15,9 +15,9 @@ from account.auth import admin_only
 
 stripe.api_key = settings.STRIPE_API_KEY
 
+# @admin_only
 @csrf_exempt
 @login_required
-@admin_only
 def list_offers(request):
 
     if request.method == "POST":

@@ -28,7 +28,7 @@ def generate_image(prompt,negative_prompt="",output_format="png",aspect_ratio="1
         raise Exception(str(response.json()))
 
 """
-curl -f -sS "https://api.stability.ai/v2beta/stable-image/generate/core" -H "authorization: Bearer sk-saMcB871NueeMnAO3SYpTwNiGRyz2D5t1rZtQBI9vfG56wF1" -H "accept: image/*" -F prompt="Lighthouse on a cliff overlooking the ocean" -F output_format="webp" -o "./lighthouse.webp"
+curl -f -sS "https://api.stability.ai/v2beta/stable-image/generate/core" -H "authorization: " -H "accept: image/*" -F prompt="Lighthouse on a cliff overlooking the ocean" -F output_format="webp" -o "./lighthouse.webp"
 """
 
 
